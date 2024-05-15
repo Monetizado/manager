@@ -1,0 +1,89 @@
+<html>
+
+
+    <body>
+
+
+        <select name="networkSelector" id="networkSelector" onchange="changeNetwork()">
+           <option value="arbitrum:sepolia">Arbitrum Sepolia</option>
+           <option value="base:testnet">Base Testnet</option>
+        </select>
+
+
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+        <script src="https://c0f4f41c-2f55-4863-921b-sdk-docs.github.io/cdn/metamask-sdk.js"></script>
+        <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
+        <script type="text/javascript">
+
+            const networksProperties = {
+                    "arbitrum:sepolia" : {urlRPC: "https://arbitrum-sepolia.blockpi.network/v1/rpc/public", chainId: 421614, chainName: "Arbitrum Sepolia", currencyName: "ETH", decimals: 18, currencySymbol: "ETH"},
+                    "base:testnet": {urlRPC: "https://sepolia.base.org", chainId: 84532, chainName: "Base Sepolia", currencyName: "ETH", decimals: 18, currencySymbol: "ETH"},
+                    "berachain:testnet" : {urlRPC: "https://artio.rpc.berachain.com/", chainId: 80085, chainName: "Berachain Testnet", currencyName: "BERA", decimals: 18, currencySymbol: "BERA"},
+                    "bittorrent:testnet": {urlRPC: "https://pre-rpc.bt.io/", chainId: 1029, chainName: "BitTorrent Chain Donau", currencyName: "BTT", decimals: 18, currencySymbol: "BTT"},
+                    "bnb:testnet": {urlRPC: "https://bsc-testnet-rpc.publicnode.com	", chainId: 97, chainName: "BNB Chain Testnet", currencyName: "BNB", decimals: 18, currencySymbol: "BNB"},
+                    "botanix:testnet" : {urlRPC: "https://node.botanixlabs.dev", chainId: 3636, chainName: "Botanix Testnet", currencyName: "BTC", decimals: 18, currencySymbol: "BTC"},
+                    "etherlink:testnet" : {urlRPC: "https://node.ghostnet.etherlink.com", chainId: 128123, chainName: "Etherlink Testnet", currencyName: "XTZ", decimals: 18, currencySymbol: "XTZ"},
+                    "filecoin:testnet" : {urlRPC: "https://filecoin-calibration.drpc.org", chainId: 314159, chainName: "Filecoin Calibration", currencyName: "tFIL", decimals: 18, currencySymbol: "tFIL"},
+                    "lisk:testnet" : {urlRPC: "https://rpc.sepolia-api.lisk.com", chainId: 4202, chainName: "Lisk Sepolia Testnet", currencyName: "ETH", decimals: 18, currencySymbol: "ETH"},
+                    "mode:testnet" : {urlRPC: "https://sepolia.mode.network", chainId: 919, chainName: "Mode Testnet", currencyName: "ETH", decimals: 18, currencySymbol: "ETH"},
+                    "morph:testnet": {urlRPC: "https://rpc-testnet.morphl2.io", chainId: 2710, chainName: "Morph Testnet", currencyName: "ETH", decimals: 18, currencySymbol: "ETH"},
+                    "opbnb:testnet": {urlRPC: "https://opbnb-testnet-rpc.bnbchain.org", chainId: 5611, chainName: "opBnB Testnet", currencyName: "BNB", decimals: 18, currencySymbol: "BNB"},
+                    "scroll:testnet": {urlRPC: "https://sepolia-rpc.scroll.io/", chainId: 534351, chainName: "Scroll Sepolia", currencyName: "ETH", decimals: 18, currencySymbol: "ETH"},
+                    "shardeum:testnet": {urlRPC: "https://sphinx.shardeum.org", chainId: 8082, chainName: "Shardeum Sphinx", currencyName: "SHM", decimals: 18, currencySymbol: "SHM"},
+                    "taraxa:testnet": {urlRPC: "https://rpc.testnet.taraxa.io/", chainId: 842, chainName: "Taraxa Testnet", currencyName: "TARA", decimals: 18, currencySymbol: "TARA"}
+                };
+
+            async function loginWithMetamask() {
+                const ethereum = MMSDK.getProvider() // You can also access via window.ethereum
+                try {
+                    var accounts = await ethereum.request({method: 'eth_requestAccounts'});
+                    account = accounts[0];
+                    $('.current_account_text').text(account);
+                    await changeNetwork();
+
+                } catch {
+                    location.href = "login.html";
+                }
+            }
+
+            async function changeNetwork() {
+                
+                var networkSelected = $('#networkSelector').val();
+                networkSelected = networkSelected != null? networkSelected : "arbitrum:sepolia";
+
+                var networkSelectedProperties = networksProperties[networkSelected];
+
+                if (window.ethereum.networkVersion !== networkSelectedProperties.chainId) {
+                    try {
+                        await window.ethereum.request({
+                            method: 'wallet_switchEthereumChain',
+                            params: [{ chainId: web3.utils.toHex(networkSelectedProperties.chainId) }]
+                        });
+                        } catch (err) {
+                            // This error code indicates that the chain has not been added to MetaMask
+                        if (err.code === 4902) {
+                            await window.ethereum.request({
+                            method: 'wallet_addEthereumChain',
+                            params: [
+                                {
+                                chainName: networkSelectedProperties.chainName,
+                                chainId: web3.utils.toHex(networkSelectedProperties.chainId),
+                                nativeCurrency: { name: networkSelectedProperties.currencyName, decimals: networkSelectedProperties.decimals, symbol: networkSelectedProperties.currencySymbol },
+                                rpcUrls: [networkSelectedProperties.urlRPC]
+                                }
+                            ]
+                            });
+                        }
+
+                        if (err.code === 4001) {
+                            location.href = "login.html";
+                        }
+                    }
+                }
+            }
+
+        </script> 
+    </body>
+</html>
