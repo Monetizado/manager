@@ -59,27 +59,27 @@
                     try {
                         await window.ethereum.request({
                             method: 'wallet_switchEthereumChain',
-                            params: [{ chainId: web3.utils.toHex(networkSelectedProperties.chainId) }]
+                            params: [{ chainId: Web3.utils.toHex(networkSelectedProperties.chainId) }]
                         });
                         } catch (err) {
                             // This error code indicates that the chain has not been added to MetaMask
-                        if (err.code === 4902) {
-                            await window.ethereum.request({
-                            method: 'wallet_addEthereumChain',
-                            params: [
-                                {
-                                chainName: networkSelectedProperties.chainName,
-                                chainId: web3.utils.toHex(networkSelectedProperties.chainId),
-                                nativeCurrency: { name: networkSelectedProperties.currencyName, decimals: networkSelectedProperties.decimals, symbol: networkSelectedProperties.currencySymbol },
-                                rpcUrls: [networkSelectedProperties.urlRPC]
-                                }
-                            ]
-                            });
-                        }
+                            if (err.code === 4902) {
+                                await window.ethereum.request({
+                                method: 'wallet_addEthereumChain',
+                                params: [
+                                    {
+                                    chainName: networkSelectedProperties.chainName,
+                                    chainId: Web3.utils.toHex(networkSelectedProperties.chainId),
+                                    nativeCurrency: { name: networkSelectedProperties.currencyName, decimals: networkSelectedProperties.decimals, symbol: networkSelectedProperties.currencySymbol },
+                                    rpcUrls: [networkSelectedProperties.urlRPC]
+                                    }
+                                ]
+                                });
+                            }
 
-                        if (err.code === 4001) {
-                            location.href = "login.html";
-                        }
+                            if (err.code === 4001) {
+                                location.href = "login.html";
+                            }
                     }
                 }
             }
