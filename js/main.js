@@ -468,6 +468,134 @@ async function getContentList(){
             ],
         });
         contentInfo = iface.decodeFunctionResult("getProtectedContentsForCurrentUser", contentInfo);
-        return contentInfo;
-    }
+        if(contentInfo[0].length > 0) {
+  
+            var list = document.querySelector('#my_contents');
+              var table = document.createElement('table');
+              var thead = document.createElement('thead');
+              var tbody = document.createElement('tbody');
+      
+              var theadTr = document.createElement('tr');
+              var balanceHeader = document.createElement('th');
+              balanceHeader.innerHTML = 'ID';
+              theadTr.appendChild(balanceHeader);
+              var contractNameHeader = document.createElement('th');
+              contractNameHeader.innerHTML = 'Name';
+              theadTr.appendChild(contractNameHeader);
+              var contractTickerHeader = document.createElement('th');
+              contractTickerHeader.innerHTML = 'Access cost';
+              theadTr.appendChild(contractTickerHeader);
+              
+              var usdHeader = document.createElement('th');
+              usdHeader.innerHTML = 'Is Protected?';
+              theadTr.appendChild(usdHeader);
+
+              var usdHeader2 = document.createElement('th');
+              usdHeader2.innerHTML = 'Available amount';
+              theadTr.appendChild(usdHeader2);
+
+              var usdHeader3 = document.createElement('th');
+              usdHeader3.innerHTML = 'Collected amount';
+              theadTr.appendChild(usdHeader3);
+      
+              thead.appendChild(theadTr)
+      
+              table.className = 'table';
+              table.appendChild(thead);
+      
+              contentInfo[0].forEach((valor, clave) => {
+                var tbodyTr = document.createElement('tr');
+                var contractTd = document.createElement('td');
+                contractTd.innerHTML = "<b>"+valor.sequenceId+"</b>";
+                tbodyTr.appendChild(contractTd);
+                var contractTickerTd = document.createElement('td');
+                contractTickerTd.innerHTML = '<b>' + valor.name + '</b>';
+                tbodyTr.appendChild(contractTickerTd);
+                var balanceTd = document.createElement('td');
+                balanceTd.innerHTML = '<b>' + valor.accessCost + '</b>';
+                tbodyTr.appendChild(balanceTd);
+                var balanceUSDTd = document.createElement('td');
+                balanceUSDTd.innerHTML = '<b>' + valor.isProtected+ '</b>';
+                tbodyTr.appendChild(balanceUSDTd);
+                var balanceUSDTd2 = document.createElement('td');
+                balanceUSDTd2.innerHTML = '<b>' + valor.amountAvailable+ '</b>';
+                tbodyTr.appendChild(balanceUSDTd2);
+                var balanceUSDTd3 = document.createElement('td');
+                balanceUSDTd3.innerHTML = '<b>' + valor.amountCollected+ '</b>';
+                tbodyTr.appendChild(balanceUSDTd3);
+                tbody.appendChild(tbodyTr);
+            });
+      
+            table.appendChild(tbody);
+      
+              list.appendChild(table);
+          }
+          //$('.loading_message').css('display','none');
+        }
+        //return contentInfo;
+    
 }
+
+async function createContent() {
+    await changeNetwork();
+    await getContract(account);
+    if(contractPublic != null) {
+      var clubName = $('#club_name').val();
+      if(clubName == '') {
+        $('#errorCreateClub').css("display","block");
+        $('#errorCreateClub').text("Club name is invalid");
+        return;
+      }
+      var minimumToEnter = $('#club_minimum').val();
+      if(minimumToEnter == '' || minimumToEnter < 0) {
+        $('#errorCreateClub').css("display","block");
+        $('#errorCreateClub').text("The minimum to join is not valid.");
+        return;
+      }
+      try
+      {
+        $('.loading_message_creating').css("display","block");
+        minimumToEnter = web3.utils.toWei(minimumToEnter,"ether");
+        const query = contractPublic.methods.createClub(clubName, minimumToEnter);
+        const encodedABI = query.encodeABI();
+        const gasPrice = web3.utils.toHex(await web3.eth.getGasPrice());
+        var clubId = await ethereum
+                .request({
+                  method: 'eth_sendTransaction',
+                  params: [
+                    {
+                      from: account, 
+                      to: investmentContractAddress,
+                      data: encodedABI,
+                      gasLimit: '0x5208', // Customizable by the user during MetaMask confirmation.
+                      maxPriorityFeePerGas: gasPrice, // Customizable by the user during MetaMask confirmation.
+                      maxFeePerGas: gasPrice, // Customizable by the user during MetaMask confirmation.
+                    },
+                  ],
+                });
+        await sleep(milisecondsToWait);
+        
+        var clubCreated = await web3.eth.getTransactionReceipt(clubId);
+        if(clubCreated == null) {
+          $('#successCreateClub').css("display","none");
+          $('.invalid-feedback').css("display","block");
+          $('.invalid-feedback').text("Error creating the club");
+          return;
+        }
+        
+        $('#club_name').val('');
+        $('#club_minimum').val('');
+        $('#errorCreateClub').css("display","none");
+        $('.loading_message_creating').css("display","none");
+        $('#successCreateClub').css("display","block");
+        $('#successCreateClub').text("Club created successfully with the name: " + clubName);
+      } catch(e) {
+        $('.valid-feedback').css('display','none');
+          $('.invalid-feedback').css('display','block');
+          $('.loading_message_creating').css("display","none");
+          $('.invalid-feedback').text(e.message);
+      }
+      
+      
+    }
+  }
