@@ -175,9 +175,24 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-12">
+                                            Network: <select  class="form-control form-control-user" name="networkSelector" id="networkSelector" onchange="changeNetwork()">
+                                                        <option value="arbitrum:sepolia">Arbitrum Sepolia</option>
+                                                        <option value="base:testnet">Base Testnet</option>
+                                                        <option value="berachain:testnet">Berachain Testnet</option>
+                                                        <option value="bittorrent:testnet">BitTorrent Testnet</option>
+                                                        <option value="bnb:testnet">BnB Testnet</option>
+                                                        <option value="botanix:testnet">Botanix Testnet</option>
+                                                        <option value="etherlink:testnet">Etherlink Testnet</option>
+                                                        <option value="filecoin:testnet">Filecoin Testnet</option>
+                                                        <option value="mode:testnet">Mode Testnet</option>
+                                                        <option value="morph:testnet">Morph Testnet</option>
+                                                        <option value="opbnb:testnet">opBnB Testnet</option>
+                                                        <option value="scroll:testnet">Scroll Testnet</option>
+                                                        <option value="shardeum:testnet">Shardeum Testnet</option>
+                                                    </select> <br />
                                             Content Name: <input type="text" id="content_name" class="form-control form-control-user" placeholder="Give a name for this monetized content"> <br />
                                             Amount to pay: <input type="number" id="content_amount" class="form-control form-control-user" placeholder="Give the amount to pay"> <br />
-                                            <input type="button" id="createContentButton" value="Create" class="btn btn-primary btn-block" />
+                                            <input type="button" id="createContentButton" onclick="createContent()" value="Create" class="btn btn-primary btn-block" />
                                             <span class="loading_message_creating" style="display: none;">Creating the content...</span> 
                                             <p class="valid-feedback" id="successCreateContent" style="display: none;"></p>
                                             <p class="invalid-feedback" id="errorCreateContent" style="display: none;">Error</p>

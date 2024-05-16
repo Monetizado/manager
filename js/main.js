@@ -718,19 +718,34 @@ async function collectMoney(sequenceId){
 }
 
 async function createContent() {
-    await loginWithMetamask();
+    var accounts = await ethereum.request({method: 'eth_requestAccounts'});
+    var account = accounts[0];
+    
+    var networkSelected = $('#networkSelector').val();
+    networkSelected = networkSelected != null? networkSelected : "arbitrum:sepolia";
+
+    const contractNetwork = networksContracts[networkSelected];
+    var networkSelectedProperties = networksProperties[networkSelected];
+
+    var web3 = new Web3(new Web3.providers.HttpProvider(networkSelectedProperties.urlRPC));
+
     var contractPublic = await getContract(web3,contractNetwork,account);
+
+    const networkName = networkSelected.split(':')[0];
+
+    const isEIP1559 = networksEIP1559.includes(networkName);
+
     if(contractPublic != null) {
       var contentName = $('#content_name').val();
       if(contentName == '') {
-        $('#errorCreateClub').css("display","block");
-        $('#errorCreateClub').text("Content name is invalid");
+        $('#errorCreateContent').css("display","block");
+        $('#errorCreateContent').text("Content name is invalid");
         return;
       }
       var contentAmount = $('#content_amount').val();
       if(contentAmount == '' || contentAmount < 0) {
-        $('#errorCreateClub').css("display","block");
-        $('#errorCreateClub').text("The amount to pay is not valid.");
+        $('#errorCreateContent').css("display","block");
+        $('#errorCreateContent').text("The amount to pay is not valid.");
         return;
       }
       try
@@ -740,23 +755,30 @@ async function createContent() {
         const query = contractPublic.methods.addProtectedContent(contentName, contentAmount);
         const encodedABI = query.encodeABI();
         const gasPrice = web3.utils.toHex(await web3.eth.getGasPrice());
-        var contentId = await ethereum
-                .request({
-                  method: 'eth_sendTransaction',
-                  params: [
-                    {
-                      from: account, 
-                      to: investmentContractAddress,
-                      data: encodedABI,
-                      gasLimit: '0x5208', // Customizable by the user during MetaMask confirmation.
-                      maxPriorityFeePerGas: gasPrice, // Customizable by the user during MetaMask confirmation.
-                      maxFeePerGas: gasPrice, // Customizable by the user during MetaMask confirmation.
-                    },
-                  ],
-                });
+
+        const paramsForEIP1559 = isEIP1559 ? {
+            from: account, 
+            to: contractNetwork,
+            data: encodedABI,
+            gasLimit: '0x5208',
+            maxPriorityFeePerGas: gasPrice, 
+            maxFeePerGas: gasPrice
+        } : { from: account, 
+            to: contractNetwork,
+            data: encodedABI,
+            gasLimit: '0x5208'};
+
+        var createContentId = await ethereum
+            .request({
+            method: 'eth_sendTransaction',
+            params: [
+                paramsForEIP1559
+            ],
+        });
+
         await sleep(10000);
         
-        var contentCreated = await web3.eth.getTransactionReceipt(contentId);
+        var contentCreated = await web3.eth.getTransactionReceipt(createContentId);
         if(contentCreated == null) {
           $('#successCreateContent').css("display","none");
           $('.invalid-feedback').css("display","block");
@@ -769,7 +791,7 @@ async function createContent() {
         $('#errorCreateContent').css("display","none");
         $('.loading_message_creating').css("display","none");
         $('#successCreateContent').css("display","block");
-        $('#successCreateContent').text("Content created successfully with the name: " + clubName);
+        $('#successCreateContent').text("Content created successfully with the name: " + contentName);
       } catch(e) {
         $('.valid-feedback').css('display','none');
           $('.invalid-feedback').css('display','block');
