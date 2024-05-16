@@ -497,6 +497,10 @@ async function getContentList(){
               var usdHeader3 = document.createElement('th');
               usdHeader3.innerHTML = 'Collected amount';
               theadTr.appendChild(usdHeader3);
+
+              var usdHeaderOptions = document.createElement('th');
+              usdHeaderOptions.innerHTML = 'Options';
+              theadTr.appendChild(usdHeaderOptions);
       
               thead.appendChild(theadTr)
       
@@ -515,7 +519,7 @@ async function getContentList(){
                 balanceTd.innerHTML = '<b>' + Web3.utils.fromWei(valor.accessCost,"ether") + '</b>';
                 tbodyTr.appendChild(balanceTd);
                 var balanceUSDTd = document.createElement('td');
-                balanceUSDTd.innerHTML = '<b>' + Web3.utils.fromWei(valor.isProtected,"ether") + '</b>';
+                balanceUSDTd.innerHTML = '<b>' + valor.isProtected + '</b>';
                 tbodyTr.appendChild(balanceUSDTd);
                 var balanceUSDTd2 = document.createElement('td');
                 balanceUSDTd2.innerHTML = '<b>' + Web3.utils.fromWei(valor.amountAvailable,"ether") + '</b>';
@@ -523,6 +527,15 @@ async function getContentList(){
                 var balanceUSDTd3 = document.createElement('td');
                 balanceUSDTd3.innerHTML = '<b>' + Web3.utils.fromWei(valor.amountCollected,"ether") + '</b>';
                 tbodyTr.appendChild(balanceUSDTd3);
+                var balanceUSDTdOption2 = document.createElement('td');
+                balanceUSDTdOption2.innerHTML = '<input type="button" id="copyMonetizadoTagButton" onclick="getMonetizadoTag('+valor.sequenceId+')" value="Copy Monetizado tag to clipboard" class="btn btn-secondary btn-block" />';
+                tbodyTr.appendChild(balanceUSDTdOption2);
+                var balanceUSDTdOption3 = document.createElement('td');
+                balanceUSDTdOption3.innerHTML = '<input type="button" id="collectMoneyButton" onclick="collectMoney('+valor.sequenceId+')" value="Collect money" class="btn btn-secondary btn-block" />';
+                tbodyTr.appendChild(balanceUSDTdOption3);
+                var balanceUSDTdOption1 = document.createElement('td');
+                balanceUSDTdOption1.innerHTML = '<input type="button" id="releaseContentButton" onclick="releaseContent('+valor.sequenceId+')" value="Release/Protect content" class="btn btn-secondary btn-block" />';
+                tbodyTr.appendChild(balanceUSDTdOption1);
                 tbody.appendChild(tbodyTr);
             });
       
@@ -534,6 +547,17 @@ async function getContentList(){
         }
         //return contentInfo;
     
+}
+
+async function getMonetizadoTag(sequenceId) {
+    var accounts = await ethereum.request({method: 'eth_requestAccounts'});
+    var account = accounts[0];
+    
+    var networkSelected = $('#networkSelector').val();
+    networkSelected = networkSelected != null? networkSelected : "arbitrum:sepolia";
+
+    var tag = networkSelected+"://"+account+"/"+sequenceId;
+    navigator.clipboard.writeText(tag);
 }
 
 async function createContent() {
