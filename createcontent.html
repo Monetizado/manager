@@ -175,12 +175,12 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            Content Name: <input type="text" id="club_name" class="form-control form-control-user" placeholder="Give a name for this monetized content"> <br />
-                                            Amount to pay: <input type="number" id="club_minimum" class="form-control form-control-user" placeholder="Give the amount to pay"> <br />
-                                            <input type="button" id="createClubButton" value="Create" class="btn btn-primary btn-block" />
+                                            Content Name: <input type="text" id="content_name" class="form-control form-control-user" placeholder="Give a name for this monetized content"> <br />
+                                            Amount to pay: <input type="number" id="content_amount" class="form-control form-control-user" placeholder="Give the amount to pay"> <br />
+                                            <input type="button" id="createContentButton" value="Create" class="btn btn-primary btn-block" />
                                             <span class="loading_message_creating" style="display: none;">Creating the content...</span> 
-                                            <p class="valid-feedback" id="successCreateClub" style="display: none;"></p>
-                                            <p class="invalid-feedback" id="errorCreateClub" style="display: none;">Error</p>
+                                            <p class="valid-feedback" id="successCreateContent" style="display: none;"></p>
+                                            <p class="invalid-feedback" id="errorCreateContent" style="display: none;">Error</p>
                                         </div>
                                     </div>
                                 </div>
@@ -275,16 +275,13 @@
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
 
-
-
-        <script src="js/jquery.qrcode.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
         <script src="https://c0f4f41c-2f55-4863-921b-sdk-docs.github.io/cdn/metamask-sdk.js"></script>
         <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
         <script src="js/constants.js"></script>
     <script src="js/main.js"></script>
     <script type="text/javascript">
-        checkBalance();
+        
         
     </script>
 </body>

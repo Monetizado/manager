@@ -469,7 +469,7 @@ async function getContentList(){
         });
         contentInfo = iface.decodeFunctionResult("getProtectedContentsForCurrentUser", contentInfo);
         if(contentInfo[0].length > 0) {
-  
+            $('#my_contents').html('');
             var list = document.querySelector('#my_contents');
               var table = document.createElement('table');
               var thead = document.createElement('thead');
@@ -512,16 +512,16 @@ async function getContentList(){
                 contractTickerTd.innerHTML = '<b>' + valor.name + '</b>';
                 tbodyTr.appendChild(contractTickerTd);
                 var balanceTd = document.createElement('td');
-                balanceTd.innerHTML = '<b>' + valor.accessCost + '</b>';
+                balanceTd.innerHTML = '<b>' + Web3.utils.fromWei(valor.accessCost,"ether") + '</b>';
                 tbodyTr.appendChild(balanceTd);
                 var balanceUSDTd = document.createElement('td');
-                balanceUSDTd.innerHTML = '<b>' + valor.isProtected+ '</b>';
+                balanceUSDTd.innerHTML = '<b>' + Web3.utils.fromWei(valor.isProtected,"ether") + '</b>';
                 tbodyTr.appendChild(balanceUSDTd);
                 var balanceUSDTd2 = document.createElement('td');
-                balanceUSDTd2.innerHTML = '<b>' + valor.amountAvailable+ '</b>';
+                balanceUSDTd2.innerHTML = '<b>' + Web3.utils.fromWei(valor.amountAvailable,"ether") + '</b>';
                 tbodyTr.appendChild(balanceUSDTd2);
                 var balanceUSDTd3 = document.createElement('td');
-                balanceUSDTd3.innerHTML = '<b>' + valor.amountCollected+ '</b>';
+                balanceUSDTd3.innerHTML = '<b>' + Web3.utils.fromWei(valor.amountCollected,"ether") + '</b>';
                 tbodyTr.appendChild(balanceUSDTd3);
                 tbody.appendChild(tbodyTr);
             });
@@ -537,29 +537,29 @@ async function getContentList(){
 }
 
 async function createContent() {
-    await changeNetwork();
-    await getContract(account);
+    await loginWithMetamask();
+    var contractPublic = await getContract(web3,contractNetwork,account);
     if(contractPublic != null) {
-      var clubName = $('#club_name').val();
-      if(clubName == '') {
+      var contentName = $('#content_name').val();
+      if(contentName == '') {
         $('#errorCreateClub').css("display","block");
-        $('#errorCreateClub').text("Club name is invalid");
+        $('#errorCreateClub').text("Content name is invalid");
         return;
       }
-      var minimumToEnter = $('#club_minimum').val();
-      if(minimumToEnter == '' || minimumToEnter < 0) {
+      var contentAmount = $('#content_amount').val();
+      if(contentAmount == '' || contentAmount < 0) {
         $('#errorCreateClub').css("display","block");
-        $('#errorCreateClub').text("The minimum to join is not valid.");
+        $('#errorCreateClub').text("The amount to pay is not valid.");
         return;
       }
       try
       {
         $('.loading_message_creating').css("display","block");
-        minimumToEnter = web3.utils.toWei(minimumToEnter,"ether");
-        const query = contractPublic.methods.createClub(clubName, minimumToEnter);
+        contentAmount = web3.utils.toWei(contentAmount,"ether");
+        const query = contractPublic.methods.addProtectedContent(contentName, contentAmount);
         const encodedABI = query.encodeABI();
         const gasPrice = web3.utils.toHex(await web3.eth.getGasPrice());
-        var clubId = await ethereum
+        var contentId = await ethereum
                 .request({
                   method: 'eth_sendTransaction',
                   params: [
@@ -573,22 +573,22 @@ async function createContent() {
                     },
                   ],
                 });
-        await sleep(milisecondsToWait);
+        await sleep(10000);
         
-        var clubCreated = await web3.eth.getTransactionReceipt(clubId);
-        if(clubCreated == null) {
-          $('#successCreateClub').css("display","none");
+        var contentCreated = await web3.eth.getTransactionReceipt(contentId);
+        if(contentCreated == null) {
+          $('#successCreateContent').css("display","none");
           $('.invalid-feedback').css("display","block");
-          $('.invalid-feedback').text("Error creating the club");
+          $('.invalid-feedback').text("Error creating the content");
           return;
         }
         
-        $('#club_name').val('');
-        $('#club_minimum').val('');
-        $('#errorCreateClub').css("display","none");
+        $('#content_name').val('');
+        $('#amount_name').val('');
+        $('#errorCreateContent').css("display","none");
         $('.loading_message_creating').css("display","none");
-        $('#successCreateClub').css("display","block");
-        $('#successCreateClub').text("Club created successfully with the name: " + clubName);
+        $('#successCreateContent').css("display","block");
+        $('#successCreateContent').text("Content created successfully with the name: " + clubName);
       } catch(e) {
         $('.valid-feedback').css('display','none');
           $('.invalid-feedback').css('display','block');
