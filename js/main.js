@@ -654,6 +654,69 @@ async function protectContent(sequenceId){
     }
 }
 
+async function collectMoney(sequenceId){
+    var accounts = await ethereum.request({method: 'eth_requestAccounts'});
+    var account = accounts[0];
+    
+    var networkSelected = $('#networkSelector').val();
+    networkSelected = networkSelected != null? networkSelected : "arbitrum:sepolia";
+
+    const contractNetwork = networksContracts[networkSelected];
+    var networkSelectedProperties = networksProperties[networkSelected];
+
+    var web3 = new Web3(new Web3.providers.HttpProvider(networkSelectedProperties.urlRPC));
+
+    var contractPublic = await getContract(web3,contractNetwork,account);
+
+    const networkName = networkSelected.split(':')[0];
+
+    const isEIP1559 = networksEIP1559.includes(networkName);
+
+    if(contractPublic != undefined) {
+        var amountToCollect = 0;
+        var contentInfo = await ethereum
+              .request({
+                method: 'eth_call',
+                params: [
+                  {
+                    from: account, // The user's active address.
+                    data: contractPublic.methods.getProtectedContentByAddressAndId(account,sequenceId).encodeABI(),
+                    to: contractNetwork
+                  },
+                ],
+              });
+        contentInfo = iface.decodeFunctionResult("getProtectedContentByAddressAndId", contentInfo);
+        if(contentInfo.length > 0) {
+            amountToCollect = contentInfo[0].amountAvailable.toBigInt();
+        }
+        const query = contractPublic.methods.withdrawMoneyFromContent(sequenceId,amountToCollect);
+        const encodedABI = query.encodeABI();
+        const gasPrice = Web3.utils.toHex(await web3.eth.getGasPrice());
+
+        const paramsForEIP1559 = isEIP1559 ? {
+            from: account, 
+            to: contractNetwork,
+            data: encodedABI,
+            gasLimit: '0x5208',
+            maxPriorityFeePerGas: gasPrice, 
+            maxFeePerGas: gasPrice
+        } : { from: account, 
+            to: contractNetwork,
+            data: encodedABI,
+            gasLimit: '0x5208'};
+
+        var withdrawMoneyFromContentId = await ethereum
+        .request({
+        method: 'eth_sendTransaction',
+        params: [
+            paramsForEIP1559
+        ],
+        });
+
+        await getContentList();
+    }
+}
+
 async function createContent() {
     await loginWithMetamask();
     var contractPublic = await getContract(web3,contractNetwork,account);
