@@ -534,7 +534,7 @@ async function getContentList(){
                 balanceUSDTdOption3.innerHTML = '<input type="button" id="collectMoneyButton" onclick="collectMoney('+valor.sequenceId+')" value="Collect money" class="btn btn-secondary btn-block" />';
                 tbodyTr.appendChild(balanceUSDTdOption3);
                 var balanceUSDTdOption1 = document.createElement('td');
-                balanceUSDTdOption1.innerHTML = '<input type="button" id="releaseContentButton" onclick="releaseContent('+valor.sequenceId+')" value="Release/Protect content" class="btn btn-secondary btn-block" />';
+                balanceUSDTdOption1.innerHTML = valor.isProtected == true? '<input type="button" id="releaseContentButton" onclick="releaseContent('+valor.sequenceId+')" value="Release content" class="btn btn-secondary btn-block" />' : '<input type="button" id="protectContentButton" onclick="protectContent('+valor.sequenceId+')" value="Protect content" class="btn btn-secondary btn-block" />';
                 tbodyTr.appendChild(balanceUSDTdOption1);
                 tbody.appendChild(tbodyTr);
             });
@@ -558,6 +558,100 @@ async function getMonetizadoTag(sequenceId) {
 
     var tag = networkSelected+"://"+account+"/"+sequenceId;
     navigator.clipboard.writeText(tag);
+}
+
+async function releaseContent(sequenceId){
+    var accounts = await ethereum.request({method: 'eth_requestAccounts'});
+    var account = accounts[0];
+    
+    var networkSelected = $('#networkSelector').val();
+    networkSelected = networkSelected != null? networkSelected : "arbitrum:sepolia";
+
+    const contractNetwork = networksContracts[networkSelected];
+    var networkSelectedProperties = networksProperties[networkSelected];
+
+    var web3 = new Web3(new Web3.providers.HttpProvider(networkSelectedProperties.urlRPC));
+
+    var contractPublic = await getContract(web3,contractNetwork,account);
+
+    const networkName = networkSelected.split(':')[0];
+
+    const isEIP1559 = networksEIP1559.includes(networkName);
+
+    if(contractPublic != undefined) {
+        const query = contractPublic.methods.unprotectContent(sequenceId);
+        const encodedABI = query.encodeABI();
+        const gasPrice = Web3.utils.toHex(await web3.eth.getGasPrice());
+
+        const paramsForEIP1559 = isEIP1559 ? {
+            from: account, 
+            to: contractNetwork,
+            data: encodedABI,
+            gasLimit: '0x5208',
+            maxPriorityFeePerGas: gasPrice, 
+            maxFeePerGas: gasPrice
+        } : { from: account, 
+            to: contractNetwork,
+            data: encodedABI,
+            gasLimit: '0x5208'};
+
+        var unprotectContentId = await ethereum
+            .request({
+            method: 'eth_sendTransaction',
+            params: [
+                paramsForEIP1559
+            ],
+            });
+
+        await getContentList();
+    }
+}
+
+async function protectContent(sequenceId){
+    var accounts = await ethereum.request({method: 'eth_requestAccounts'});
+    var account = accounts[0];
+    
+    var networkSelected = $('#networkSelector').val();
+    networkSelected = networkSelected != null? networkSelected : "arbitrum:sepolia";
+
+    const contractNetwork = networksContracts[networkSelected];
+    var networkSelectedProperties = networksProperties[networkSelected];
+
+    var web3 = new Web3(new Web3.providers.HttpProvider(networkSelectedProperties.urlRPC));
+
+    var contractPublic = await getContract(web3,contractNetwork,account);
+
+    const networkName = networkSelected.split(':')[0];
+
+    const isEIP1559 = networksEIP1559.includes(networkName);
+
+    if(contractPublic != undefined) {
+        const query = contractPublic.methods.protectContent(sequenceId);
+        const encodedABI = query.encodeABI();
+        const gasPrice = Web3.utils.toHex(await web3.eth.getGasPrice());
+
+        const paramsForEIP1559 = isEIP1559 ? {
+            from: account, 
+            to: contractNetwork,
+            data: encodedABI,
+            gasLimit: '0x5208',
+            maxPriorityFeePerGas: gasPrice, 
+            maxFeePerGas: gasPrice
+        } : { from: account, 
+            to: contractNetwork,
+            data: encodedABI,
+            gasLimit: '0x5208'};
+
+        var protectContentId = await ethereum
+            .request({
+            method: 'eth_sendTransaction',
+            params: [
+                paramsForEIP1559
+            ],
+            });
+
+        await getContentList();
+    }
 }
 
 async function createContent() {
