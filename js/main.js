@@ -812,11 +812,11 @@ async function createContent() {
 
 
 function checkTx(hash, web3) {
-    let statusElement = document.getElementById("tx-status")
+    //let statusElement = document.getElementById("tx-status")
 
     // Log which tx hash we're checking
     console.log("Waiting for tx " + hash)
-    statusElement.innerHTML = "Waiting"
+    //statusElement.innerHTML = "Waiting"
 
     // Set interval to regularly check if we can get a receipt
     let interval = setInterval(() => {
@@ -829,10 +829,10 @@ function checkTx(hash, web3) {
                 console.log("Gotten receipt")
                 if (receipt.status === true) {
                     console.log(receipt)
-                    statusElement.innerHTML = "Success"
+                    //statusElement.innerHTML = "Success"
                 } else if (receipt.status === false) {
                     console.log("Tx failed")
-                    statusElement.innerHTML = "Failed"
+                    //statusElement.innerHTML = "Failed"
                 }
 
                 // Clear interval
