@@ -716,9 +716,11 @@ async function collectMoney(sequenceId){
         params: [
             paramsForEIP1559
         ],
-        });
+        }).then((hash) => {
+            checkTx(hash,web3);
+        }).catch((err) => console.log(err));
 
-        checkTx(withdrawMoneyFromContentId,web3);
+        
 
         await getContentList();
     }
@@ -781,9 +783,9 @@ async function createContent() {
             params: [
                 paramsForEIP1559
             ],
-        });
-
-        checkTx(createContentId,web3);
+        }).then((hash) => {
+            checkTx(hash,web3);
+        }).catch((err) => console.log(err));
         
         var contentCreated = await web3.eth.getTransactionReceipt(createContentId);
         if(contentCreated == null) {
