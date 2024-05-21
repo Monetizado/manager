@@ -400,7 +400,7 @@ async function loginWithMetamask() {
         await changeNetwork();
 
     } catch {
-        location.href = "login.html";
+        //location.href = "login.html";
     }
 }
 
@@ -440,7 +440,7 @@ async function changeNetwork() {
             }
 
             if (err.code === 4001) {
-                location.href = "login.html";
+                //location.href = "login.html";
             }
         }
     }
@@ -841,3 +841,9 @@ function checkTx(hash, web3) {
         })
     }, 1000)
 }
+
+$(function() {
+    $('#btnAuth').click(function() {
+
+    });
+})
