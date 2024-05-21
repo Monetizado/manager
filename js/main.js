@@ -718,6 +718,8 @@ async function collectMoney(sequenceId){
         ],
         });
 
+        checkTx(withdrawMoneyFromContentId,web3);
+
         await getContentList();
     }
 }
@@ -781,7 +783,7 @@ async function createContent() {
             ],
         });
 
-        await sleep(10000);
+        checkTx(createContentId,web3);
         
         var contentCreated = await web3.eth.getTransactionReceipt(createContentId);
         if(contentCreated == null) {
@@ -807,3 +809,35 @@ async function createContent() {
       
     }
   }
+
+
+function checkTx(hash, web3) {
+    let statusElement = document.getElementById("tx-status")
+
+    // Log which tx hash we're checking
+    console.log("Waiting for tx " + hash)
+    statusElement.innerHTML = "Waiting"
+
+    // Set interval to regularly check if we can get a receipt
+    let interval = setInterval(() => {
+
+        web3.eth.getTransactionReceipt(hash, (err, receipt) => {
+
+            // If we've got a receipt, check status and log / change text accordingly
+            if (receipt) {
+                
+                console.log("Gotten receipt")
+                if (receipt.status === true) {
+                    console.log(receipt)
+                    statusElement.innerHTML = "Success"
+                } else if (receipt.status === false) {
+                    console.log("Tx failed")
+                    statusElement.innerHTML = "Failed"
+                }
+
+                // Clear interval
+                clearInterval(interval)
+            }
+        })
+    }, 1000)
+}
