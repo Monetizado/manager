@@ -379,6 +379,7 @@ const networksProperties = {
         "shardeum:testnet": {urlRPC: "https://sphinx.shardeum.org", chainId: 8082, chainName: "Shardeum Sphinx", currencyName: "SHM", decimals: 18, currencySymbol: "SHM"},
         "shido:testnet": {urlRPC: "https://rpc-testnet-nodes.shidoscan.com", chainId: 9007, chainName: "Shido Testnet", currencyName: "SHIDO", decimals: 18, currencySymbol: "SHIDO"},
         "taraxa:testnet": {urlRPC: "https://rpc.testnet.taraxa.io/", chainId: 842, chainName: "Taraxa Testnet", currencyName: "TARA", decimals: 18, currencySymbol: "TARA"},
+        "theta:testnet": {urlRPC: "https://eth-rpc-api-testnet.thetatoken.org/rpc", chainId: 365, chainName: "Theta Testnet", currencyName: "TFUEL", decimals: 18, currencySymbol: "TFUEL"},
         // Mainnets
 		"bittorrent:mainnet": {urlRPC: "https://rpc.bt.io", chainId: 199, chainName: "BitTorrent Chain Mainnet", currencyName: "BTT", decimals: 18, currencySymbol: "BTT"}
     };
@@ -407,6 +408,7 @@ const networksContracts = {
     "scroll:testnet":"0x4dA05ddA2F0586327E956548fd3E88a508ba2168",
     "shardeum:testnet":"0x4dA05ddA2F0586327E956548fd3E88a508ba2168",
     "shido:testnet":"0x7D3789722F4d94A38852E794bf8C1f6cd53B47aB",
+    "theta:testnet":"0x50f57850ccf3ebe7f19993facbb4caa4d10cc4ee",
     // Mainnets
     "bittorrent:mainnet":"0x4dA05ddA2F0586327E956548fd3E88a508ba2168",
 }
