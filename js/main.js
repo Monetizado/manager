@@ -1,4 +1,4 @@
-const networksEIP1559 = ["bnb","opbnb","base"];
+const networksEIP1559 = ["bnb","opbnb","base","fuse"];
 
 const monetizadoAbi = [
     {
@@ -369,6 +369,7 @@ const networksProperties = {
         "educhain:testnet" : {urlRPC: "https://open-campus-codex-sepolia.drpc.org", chainId: 656476, chainName: "Open Campus Codex Sepolia", currencyName: "EDU", decimals: 18, currencySymbol: "EDU"},
         "etherlink:testnet" : {urlRPC: "https://node.ghostnet.etherlink.com", chainId: 128123, chainName: "Etherlink Testnet", currencyName: "XTZ", decimals: 18, currencySymbol: "XTZ"},
         "filecoin:testnet" : {urlRPC: "https://filecoin-calibration.drpc.org", chainId: 314159, chainName: "Filecoin Calibration", currencyName: "tFIL", decimals: 18, currencySymbol: "tFIL"},
+        "fuse:testnet" : {urlRPC: "https://rpc.fusespark.io", chainId: 123, chainName: "Fuse Spark Testnet", currencyName: "FUSE", decimals: 18, currencySymbol: "FUSE"},
         "linea:testnet" : {urlRPC: "https://rpc.sepolia.linea.build", chainId: 59141, chainName: "Linea Sepolia", currencyName: "ETH", decimals: 18, currencySymbol: "ETH"},
         "lisk:testnet" : {urlRPC: "https://rpc.sepolia-api.lisk.com", chainId: 4202, chainName: "Lisk Sepolia Testnet", currencyName: "ETH", decimals: 18, currencySymbol: "ETH"},
         "meter:testnet" : {urlRPC: "https://rpctest.meter.io", chainId: 83, chainName: "Meter Testnet", currencyName: "MTR", decimals: 18, currencySymbol: "MTR"},
@@ -400,6 +401,7 @@ const networksContracts = {
     "educhain:testnet" : "0x4dA05ddA2F0586327E956548fd3E88a508ba2168",
     "etherlink:testnet" : "0x4dA05ddA2F0586327E956548fd3E88a508ba2168",
     "filecoin:testnet" : "0x6388418CfEa921C323b91B173E10D7f8f1193680",
+    "fuse:testnet" : "0x4dA05ddA2F0586327E956548fd3E88a508ba2168",
     "linea:testnet" : "0x4dA05ddA2F0586327E956548fd3E88a508ba2168",
     "lisk:testnet" : "0x4dA05ddA2F0586327E956548fd3E88a508ba2168",
     "meter:testnet" : "0x923720cA17B2e071542FE7419394EA717fdC1b98",
