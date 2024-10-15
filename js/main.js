@@ -376,6 +376,7 @@ const networksProperties = {
         "lisk:testnet" : {urlRPC: "https://rpc.sepolia-api.lisk.com", chainId: 4202, chainName: "Lisk Sepolia Testnet", currencyName: "ETH", decimals: 18, currencySymbol: "ETH"},
         "meter:testnet" : {urlRPC: "https://rpctest.meter.io", chainId: 83, chainName: "Meter Testnet", currencyName: "MTR", decimals: 18, currencySymbol: "MTR"},
         "mode:testnet" : {urlRPC: "https://sepolia.mode.network", chainId: 919, chainName: "Mode Testnet", currencyName: "ETH", decimals: 18, currencySymbol: "ETH"},
+        "moonbeam:testnet" : {urlRPC: "https://moonbeam-alpha.api.onfinality.io/public", chainId: 1287, chainName: "Moonbase Alpha", currencyName: "DEV", decimals: 18, currencySymbol: "DEV"},
         "morph:testnet": {urlRPC: "https://rpc-testnet.morphl2.io", chainId: 2710, chainName: "Morph Testnet", currencyName: "ETH", decimals: 18, currencySymbol: "ETH"},
         "neox:testnet": {urlRPC: "https://neoxt4seed1.ngd.network", chainId: 12227332, chainName: "Neo X T4 Testnet", currencyName: "GAS", decimals: 18, currencySymbol: "GAS"},
         "opbnb:testnet": {urlRPC: "https://opbnb-testnet-rpc.bnbchain.org", chainId: 5611, chainName: "opBnB Testnet", currencyName: "BNB", decimals: 18, currencySymbol: "BNB"},
