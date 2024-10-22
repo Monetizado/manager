@@ -357,7 +357,7 @@ var iface = new ethers.utils.Interface(monetizadoAbi);
 
 const networksProperties = {
         "arbitrum:sepolia" : {urlRPC: "https://arbitrum-sepolia.blockpi.network/v1/rpc/public", chainId: 421614, chainName: "Arbitrum Sepolia", currencyName: "ETH", decimals: 18, currencySymbol: "ETH"},
-        "aurora:testnet": {urlRPC: "https://testnet.aurora.dev", chainId: 1313161555, chainName: "Aurora Sepolia", currencyName: "ETH", decimals: 18, currencySymbol: "ETH"},
+        "aurora:testnet": {urlRPC: "https://testnet.aurora.dev", chainId: 1313161555, chainName: "Aurora Testnet", currencyName: "ETH", decimals: 18, currencySymbol: "ETH"},
         "base:testnet": {urlRPC: "https://sepolia.base.org", chainId: 84532, chainName: "Base Sepolia", currencyName: "ETH", decimals: 18, currencySymbol: "ETH"},
         "berachain:testnet" : {urlRPC: "https://artio.rpc.berachain.com/", chainId: 80085, chainName: "Berachain Testnet", currencyName: "BERA", decimals: 18, currencySymbol: "BERA"},
         "bittorrent:testnet": {urlRPC: "https://pre-rpc.bt.io/", chainId: 1029, chainName: "BitTorrent Chain Donau", currencyName: "BTT", decimals: 18, currencySymbol: "BTT"},
