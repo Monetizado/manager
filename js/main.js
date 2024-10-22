@@ -397,6 +397,7 @@ const networksProperties = {
 const networksContracts = {
 
     "arbitrum:sepolia" : "0x3258814758AC48fE9c0869d43Df8F13aD0cB2A25",
+    "aurora:testnet" : "0xF0E21Cc4EA162a96e6B52685fb6dFa86E4Ae9fb6",
     "base:testnet":"0x4dA05ddA2F0586327E956548fd3E88a508ba2168",
     "berachain:testnet" : "0x4FCA17c99Cd6eA508AD64D75Daa6a5BeBfdd5916",
     "bittorrent:testnet":"0x4dA05ddA2F0586327E956548fd3E88a508ba2168",
@@ -415,6 +416,7 @@ const networksContracts = {
     "lisk:testnet" : "0x4dA05ddA2F0586327E956548fd3E88a508ba2168",
     "meter:testnet" : "0x923720cA17B2e071542FE7419394EA717fdC1b98",
     "mode:testnet" : "0xf0F90a236c860FB79DbBA4Ad9Dd62b714268BD21",
+    "moonbeam:testnet" : "0x5E400Dc6B6C816e4aF77b2286Ae5f114d8429005",
     "morph:testnet":"0x86f5304600627e7897AaAfAD39853e3D18E71B43",
     "neox:testnet":"0x4dA05ddA2F0586327E956548fd3E88a508ba2168",
     "opbnb:testnet":"0x0702B45d590372b5456BeC39e13a46c00Fc8F733",
