@@ -356,6 +356,7 @@ async function getContract(web3,contractNetwork, userAddress) {
 var iface = new ethers.utils.Interface(monetizadoAbi);
 
 const networksProperties = {
+        "aia:testnet": {urlRPC: "https://aia-dataseed1-testnet.aiachain.org", chainId: 1320, chainName: "AIA Testnet", currencyName: "AIA", decimals: 18, currencySymbol: "AIA"},
         "arbitrum:sepolia" : {urlRPC: "https://arbitrum-sepolia.blockpi.network/v1/rpc/public", chainId: 421614, chainName: "Arbitrum Sepolia", currencyName: "ETH", decimals: 18, currencySymbol: "ETH"},
         "aurora:testnet": {urlRPC: "https://testnet.aurora.dev", chainId: 1313161555, chainName: "Aurora Testnet", currencyName: "ETH", decimals: 18, currencySymbol: "ETH"},
         "base:testnet": {urlRPC: "https://sepolia.base.org", chainId: 84532, chainName: "Base Sepolia", currencyName: "ETH", decimals: 18, currencySymbol: "ETH"},
@@ -395,7 +396,7 @@ const networksProperties = {
     };
 
 const networksContracts = {
-
+    "aia:testnet" : "0x4dA05ddA2F0586327E956548fd3E88a508ba2168",
     "arbitrum:sepolia" : "0x3258814758AC48fE9c0869d43Df8F13aD0cB2A25",
     "aurora:testnet" : "0xF0E21Cc4EA162a96e6B52685fb6dFa86E4Ae9fb6",
     "base:testnet":"0x4dA05ddA2F0586327E956548fd3E88a508ba2168",
