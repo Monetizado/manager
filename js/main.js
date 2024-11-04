@@ -388,6 +388,7 @@ const networksProperties = {
         "shardeum:testnet": {urlRPC: "https://sphinx.shardeum.org", chainId: 8082, chainName: "Shardeum Sphinx", currencyName: "SHM", decimals: 18, currencySymbol: "SHM"},
         "shibarium:testnet": {urlRPC: "https://puppynet.shibrpc.com", chainId: 157, chainName: "Puppynet Shibarium", currencyName: "BONE", decimals: 18, currencySymbol: "BONE"},
         "shido:testnet": {urlRPC: "https://rpc-testnet-nodes.shidoscan.com", chainId: 9007, chainName: "Shido Testnet", currencyName: "SHIDO", decimals: 18, currencySymbol: "SHIDO"},
+        "taiko:testnet": {urlRPC: "https://rpc.hekla.taiko.xyz", chainId: 167009, chainName: "Taiko Testnet", currencyName: "ETH", decimals: 18, currencySymbol: "ETH"},
         "taraxa:testnet": {urlRPC: "https://rpc.testnet.taraxa.io/", chainId: 842, chainName: "Taraxa Testnet", currencyName: "TARA", decimals: 18, currencySymbol: "TARA"},
         "theta:testnet": {urlRPC: "https://eth-rpc-api-testnet.thetatoken.org/rpc", chainId: 365, chainName: "Theta Testnet", currencyName: "TFUEL", decimals: 18, currencySymbol: "TFUEL"},
         "weavevm:testnet": {urlRPC: "https://testnet-rpc.wvm.dev", chainId: 9496, chainName: "WeaveVM Testnet", currencyName: "tWVM", decimals: 18, currencySymbol: "tWVM"},
@@ -427,6 +428,7 @@ const networksContracts = {
     "shardeum:testnet":"0x4dA05ddA2F0586327E956548fd3E88a508ba2168",
     "shibarium:testnet":"0x4dA05ddA2F0586327E956548fd3E88a508ba2168",
     "shido:testnet":"0x7D3789722F4d94A38852E794bf8C1f6cd53B47aB",
+    "taiko:testnet":"0x4dA05ddA2F0586327E956548fd3E88a508ba2168",
     "theta:testnet":"0x50f57850ccf3ebe7f19993facbb4caa4d10cc4ee",
     // Mainnets
     "bittorrent:mainnet":"0x4dA05ddA2F0586327E956548fd3E88a508ba2168",
